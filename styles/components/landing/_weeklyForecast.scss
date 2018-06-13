@@ -1,0 +1,34 @@
+.weekly {
+  padding: 2rem;
+  align-self: stretch;
+  color: $white;
+
+  &__header {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+  }
+
+  &__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    font-size: 1.7rem;
+  }
+
+  &__gridCell {
+    padding: 1rem;
+  }
+
+  &__label {
+    text-transform: capitalize;
+    font-size: 2rem;
+  }
+
+  &__day {
+    font-size: 2rem;
+  }
+
+  &__description {
+    text-transform: capitalize;
+  }
+}

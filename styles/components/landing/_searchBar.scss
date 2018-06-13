@@ -1,0 +1,44 @@
+.searchBar {
+  padding: 5rem;
+  background-color: $greyblue;
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+
+  &__input {
+    width: 40%;
+    height: 3rem;
+    border: none;
+    transition: width 0.5s;
+    background-color: $greyblue;
+    border-bottom: 3px solid $yellow;
+    color: $white;
+    transition: all 1s;
+
+    &::placeholder {
+      color: white;
+    }
+
+    &:focus {
+      width: 45%;
+      outline: none;
+      border-color: $lightblue;
+    }
+
+    &:focus + .magnifySVG {
+      fill: $lightblue;
+    }
+  }
+  &__fieldSet {
+    border: none;
+    color: white;
+  }
+
+  &__radioGroup:last-child {
+    margin-top: 0.5rem;
+  }
+
+  &__radio {
+    margin-right: 1rem;
+  }
+}

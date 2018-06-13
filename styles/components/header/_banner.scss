@@ -1,0 +1,21 @@
+.banner {
+  background-color: $lightblue;
+  padding: 2rem 0.5rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  color: $white;
+
+  &__img {
+    height: 5rem;
+    width: 5rem;
+    border-radius: 0.5rem;
+  }
+
+  &__appName {
+    margin-left: 0.5rem;
+    font-size: 3rem;
+    text-shadow: -0.2rem 0.2rem black;
+    font-weight: 700;
+  }
+}

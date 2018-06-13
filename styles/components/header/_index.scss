@@ -1,0 +1,9 @@
+@import 'banner';
+
+.header__nav {
+  text-align: center;
+  background-color: $greyblue;
+  color: $white;
+  padding: 2rem;
+  text-transform: capitalize;
+}

@@ -1,0 +1,68 @@
+.dailyForecast {
+  color: $white;
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 3rem;
+
+  &__details {
+  }
+
+  &__header {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+
+  &__sup {
+    margin-left: 0.3rem;
+  }
+
+  &__sup--mainTemp {
+    font-size: 2rem;
+  }
+
+  &__updatedOn {
+    font-size: 1.2rem;
+  }
+
+  &__temp {
+    color: $yellow;
+    font-size: 6rem;
+  }
+
+  &__condition {
+    font-size: 1.5rem;
+    margin-top: -1rem;
+  }
+
+  &__subDetails {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    flex: 1;
+    margin-left: 5rem;
+    font-size: 1.4rem;
+  }
+
+  &__windSpeed {
+  }
+
+  &__maxTemp {
+  }
+
+  &__minTemp {
+  }
+
+  &__pressure {
+  }
+
+  &__humidity {
+  }
+
+  &__sunrise {
+  }
+
+  &__sunset {
+  }
+}
