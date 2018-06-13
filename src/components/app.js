@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Footer from './footer';
 import Header from './header';
 import Landing from './landing';
+import { fetchLatLon } from '../actions';
 
 class App extends Component {
   constructor(props) {
@@ -13,11 +16,24 @@ class App extends Component {
     this.state = {
       bgClassName: hours >= 6 && hours < 20 ? 'dayBg' : 'nightBg'
     };
+
+    document.body.classList.add(this.state.bgClassName);
   }
+
+  componentDidMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        //incase the geloaction is taking a long time and the user has already entered a search, that way we don't override the search that they entered manually
+        if (!this.props.weather) {
+          this.props.fetchLatLon(position.coords.latitude, position.coords.longitude);
+        }
+      });
+    }
+  }
+
   render() {
-    console.log(this.state);
     return (
-      <div className={`app ${this.state.bgClassName}`}>
+      <div className="app">
         <Header />
         <Landing />
         <Footer />
@@ -26,4 +42,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = ({ weather }) => ({ weather });
+
+App.propTypes = {
+  fetchLatLon: PropTypes.func
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchLatLon }
+)(App);

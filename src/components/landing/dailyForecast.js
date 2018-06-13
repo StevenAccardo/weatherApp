@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const DailyForecast = ({ weather }) => {
   const optionsDateTime = {
@@ -103,6 +104,10 @@ const DailyForecast = ({ weather }) => {
     );
   }
   return null;
+};
+
+DailyForecast.propTypes = {
+  weather: PropTypes.object
 };
 
 const mapStateToProps = ({ weather }) => ({ weather });

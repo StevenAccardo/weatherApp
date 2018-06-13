@@ -9,13 +9,34 @@
 html {
   box-sizing: border-box;
   font-size: 62.5%; //1rem = 10px/16px = 62.5%
+  height: 100%;
+  position: relative;
+
+  @include respond(md) {
+    font-size: 50%;
+  }
+
+  @include respond(xs) {
+    font-size: 37.5%;
+  }
 }
 
 body {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
+  height: 100%;
+  position: relative;
 }
 
 .app {
-  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 20rem;
+}
+
+::selection {
+  background-color: $greyblue;
+  color: $yellow;
 }

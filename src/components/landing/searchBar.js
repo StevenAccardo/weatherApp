@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import MagnifySVG from './magnifySVG';
 import { fetchWeather } from '../../actions';
 
@@ -17,7 +18,6 @@ class SearchBar extends Component {
 
   keyUp(e) {
     if (e.keyCode === 13) {
-      console.log('this.state', this.state);
       this.props.fetchWeather(this.state.searchValue, this.state.units);
       this.setState({ searchValue: '', units: 'imperial' });
     }
@@ -38,18 +38,26 @@ class SearchBar extends Component {
         <MagnifySVG />
         <fieldset className="searchBar__fieldSet">
           <div className="searchBar__radioGroup">
-            <input onChange={this.unitChange} id="imperial" className="searchBar__radio" type="radio" name="units" value="imperial" checked />
-            <label htmlFor="imperial">Imperial</label>
+            <input onChange={this.unitChange} id="imperial" className="searchBar__radio-input" type="radio" name="units" value="imperial" checked={this.state.units === 'imperial'} />
+            <label className="searchBar__radio-label" htmlFor="imperial">
+              <span className="searchBar__radio-button" />Imperial
+            </label>
           </div>
           <div className="searchBar__radioGroup">
-            <input id="metric" className="searchBar__radio" type="radio" name="units" value="metric" />
-            <label htmlFor="metric">Metric</label>
+            <input onChange={this.unitChange} id="metric" className="searchBar__radio-input" type="radio" name="units" value="metric" checked={this.state.units === 'metric'} />
+            <label className="searchBar__radio-label" htmlFor="metric">
+              <span className="searchBar__radio-button" />Metric
+            </label>
           </div>
         </fieldset>
       </div>
     );
   }
 }
+
+SearchBar.propTypes = {
+  fetchWeather: PropTypes.func
+};
 
 export default connect(
   null,

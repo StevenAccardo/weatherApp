@@ -5,6 +5,10 @@
   display: flex;
   justify-content: center;
 
+  @include respond(sm) {
+    padding: 2rem;
+  }
+
   &__input {
     width: 40%;
     height: 3rem;
@@ -12,17 +16,27 @@
     transition: width 0.5s;
     background-color: $greyblue;
     border-bottom: 3px solid $yellow;
-    color: $white;
+    color: $yellow;
     transition: all 1s;
+    font-size: 1.3rem;
+
+    @include respond(sm) {
+      width: 70%;
+    }
 
     &::placeholder {
       color: white;
+      font-size: 1.3rem;
     }
 
     &:focus {
       width: 45%;
       outline: none;
       border-color: $lightblue;
+
+      @include respond(sm) {
+        width: 80%;
+      }
     }
 
     &:focus + .magnifySVG {
@@ -32,13 +46,70 @@
   &__fieldSet {
     border: none;
     color: white;
+    margin-top: 0.5rem;
+  }
+
+  &__radioGroup {
+    margin-left: 3rem;
   }
 
   &__radioGroup:last-child {
     margin-top: 0.5rem;
   }
 
-  &__radio {
-    margin-right: 1rem;
+  &__radio-input {
+    display: none;
+  }
+
+  &__radio-input:checked ~ &__radio-label &__radio-button::after {
+    opacity: 1;
+  }
+
+  &__radio-label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    position: relative;
+    padding-left: 1rem;
+    display: inline-block;
+
+    &:first-of-type {
+      margin-bottom: 0.2rem;
+    }
+  }
+
+  &__radio-button {
+    height: 2rem;
+    width: 2rem;
+    border: 0.2rem solid $yellow;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: -2rem;
+
+    @include respond(xs) {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      height: 1rem;
+      width: 1rem;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: $yellow;
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      @include respond(xs) {
+        height: 0.6rem;
+        width: 0.6rem;
+      }
+    }
   }
 }

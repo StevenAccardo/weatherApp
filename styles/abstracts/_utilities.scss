@@ -1,7 +1,9 @@
 .dayBg {
   background-image: url(../assets/images/daySky.png);
+  object-fit: cover;
 }
 
 .nightBg {
   background-image: url(../assets/images/nightSky.jpg);
+  object-fit: cover;
 }

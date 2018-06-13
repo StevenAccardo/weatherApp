@@ -1,5 +1,4 @@
 .footer {
-  height: 10rem;
   background-color: $greyblue;
   color: $white;
   display: flex;
@@ -7,10 +6,10 @@
   justify-content: center;
   text-align: center;
   font-size: 1.5rem;
-  position: absolute;
+  height: 10rem;
   width: 100%;
+  position: absolute;
   bottom: 0;
-  left: 0;
 
   &__createdWith {
     margin-bottom: 0.5rem;

@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const WeeklyForecast = ({ weather }) => {
   if (weather && weather.forecast.list) {
@@ -15,10 +16,18 @@ const WeeklyForecast = ({ weather }) => {
       return now.getDay() !== forecastDate.getDay();
     });
 
-    //separates each 3 hour forecast into its day
+    //separates each 3 hour forecast into its corresponding day of the week
     const dayDivider = (arr, dayIncrement) => {
       return arr.filter(item => {
-        return now.getDay() + dayIncrement === new Date(item.dt * 1000).getDay();
+        //Weekdays in the Date Object go from 0 - 6, so I can't just increment from todays day, otherwise in many cases we will have a number past 6, so i had to come up with this solution.
+        const dateTarget = now.getDay() + dayIncrement;
+        if (dateTarget <= 6) {
+          return now.getDay() + dayIncrement === new Date(item.dt * 1000).getDay();
+        } else if (dateTarget === 7) {
+          return 0 === new Date(item.dt * 1000).getDay();
+        } else {
+          return dateTarget - 7 === new Date(item.dt * 1000).getDay();
+        }
       });
     };
 
@@ -35,11 +44,13 @@ const WeeklyForecast = ({ weather }) => {
       return dayArr[arrIndex];
     };
 
+    //calls the function to get a single forecast for each day from the forecast array
     const day1Final = singleOut(day1);
     const day2Final = singleOut(day2);
     const day3Final = singleOut(day3);
     const day4Final = singleOut(day4);
 
+    //Creates an object of the data we need, out of each array
     const makeObject = dailyArr => {
       const ob = {};
 
@@ -59,14 +70,19 @@ const WeeklyForecast = ({ weather }) => {
     const day3Object = makeObject(day3Final);
     const day4Object = makeObject(day4Final);
 
+    //makes a 4 day array with a a daily object at each index
     const totalData = [day1Object, day2Object, day3Object, day4Object];
 
+    //When invoked, returns all of the divs that create the grid
     const renderGrid = totalData => {
       const organize = property => {
+        //loops through the totalData array, and pulls off the value of each property passed in, for each object, and then passes that value into another array, so we will return an array with 4 values, all from the same property name, but each for a different day of the week
         const propertyArray = totalData.map(dataSet => {
           return dataSet[property];
         });
+        //Loop through each 4-set array to create a div
         return propertyArray.map((item, index) => {
+          //Turns floats into ints where necesarry
           const toInt = item => {
             switch (property) {
               case 'temp':
@@ -80,6 +96,7 @@ const WeeklyForecast = ({ weather }) => {
             }
           };
 
+          //creates a div which is returned where they are all pushed onto an empty array, to make one large array holding subarray, each subarray having come from the same property for each day
           return (
             <div key={`${property}-${index}`} className={`weekly__${property} weekly__gridCell`}>
               {toInt(item)}
@@ -89,11 +106,16 @@ const WeeklyForecast = ({ weather }) => {
       };
       const divArray = [];
 
+      //loops through the first object in the array, and pulls the name of each property, then passes that name into the organize function
+      //This loop was only used to reference the names, and since they are the same on all of the oibjects, we could have referenced any index.
+      //We could have as easily made static calls to organize() and manually passed in the required property name
+      //The divArray will be full of React JSX divs after the loop is finished
       for (let prop in totalData[0]) {
         divArray.push(organize(prop));
       }
 
       divArray.map((arr, index) => {
+        //Adds units where necesarry
         const unitRender = labelName => {
           switch (labelName) {
             case 'temp':
@@ -109,6 +131,7 @@ const WeeklyForecast = ({ weather }) => {
           }
         };
 
+        //adds an index to the beginning of each sub array that will hold a new div with label information for each row
         return arr.unshift(
           <div key={`label-${index}`} className={`${arr[0].props.className} weekly__label`}>
             {arr[0].key.replace('-0', '')}
@@ -116,8 +139,9 @@ const WeeklyForecast = ({ weather }) => {
           </div>
         );
       });
-
+      //Flattens all subrays into one long array
       const finalRenderedArray = [].concat(...divArray);
+      //loops through large array and renders divs in order, which is how I designed it
       return finalRenderedArray.map(div => {
         return div;
       });
@@ -131,50 +155,56 @@ const WeeklyForecast = ({ weather }) => {
     );
   }
 
-  return (
-    <div className="weekly">
-      <div className="weekly__header">Next 4 Days</div>
-      <div className="weekly__container">
-        <div class="weekly__day weekly__gridCell weekly__label">day</div>
-        <div class="weekly__day weekly__gridCell">Wed</div>
-        <div class="weekly__day weekly__gridCell">Thu</div>
-        <div class="weekly__day weekly__gridCell">Fri</div>
-        <div class="weekly__day weekly__gridCell">Sat</div>
-        <div class="weekly__date weekly__gridCell weekly__label">date</div>
-        <div class="weekly__date weekly__gridCell">06/13</div>
-        <div class="weekly__date weekly__gridCell">06/14</div>
-        <div class="weekly__date weekly__gridCell">06/15</div>
-        <div class="weekly__date weekly__gridCell">06/16</div>
-        <div class="weekly__description weekly__gridCell weekly__label">description</div>
-        <div class="weekly__description weekly__gridCell">clear sky</div>
-        <div class="weekly__description weekly__gridCell">few clouds</div>
-        <div class="weekly__description weekly__gridCell">clear sky</div>
-        <div class="weekly__description weekly__gridCell">light rain</div>
-        <div class="weekly__temp weekly__gridCell weekly__label">temp</div>
-        <div class="weekly__temp weekly__gridCell">82.48</div>
-        <div class="weekly__temp weekly__gridCell">79.43</div>
-        <div class="weekly__temp weekly__gridCell">74.75</div>
-        <div class="weekly__temp weekly__gridCell">70.36</div>
-        <div class="weekly__humidity weekly__gridCell weekly__label">humidity</div>
-        <div class="weekly__humidity weekly__gridCell">61</div>
-        <div class="weekly__humidity weekly__gridCell">64</div>
-        <div class="weekly__humidity weekly__gridCell">67</div>
-        <div class="weekly__humidity weekly__gridCell">73</div>
-        <div class="weekly__pressure weekly__gridCell weekly__label">pressure</div>
-        <div class="weekly__pressure weekly__gridCell">993.04</div>
-        <div class="weekly__pressure weekly__gridCell">992.07</div>
-        <div class="weekly__pressure weekly__gridCell">992.93</div>
-        <div class="weekly__pressure weekly__gridCell">992.88</div>
-        <div class="weekly__wind weekly__gridCell weekly__label">wind</div>
-        <div class="weekly__wind weekly__gridCell">4.18</div>
-        <div class="weekly__wind weekly__gridCell">4.14</div>
-        <div class="weekly__wind weekly__gridCell">6.62</div>
-        <div class="weekly__wind weekly__gridCell">6.22</div>
-      </div>
-    </div>
-  );
+  return null;
+};
+
+WeeklyForecast.propTypes = {
+  weather: PropTypes.object
 };
 
 const mapStateToProps = ({ weather }) => ({ weather });
 
 export default connect(mapStateToProps)(WeeklyForecast);
+
+// (
+//   <div className="weekly">
+//     <div className="weekly__header">Next 4 Days</div>
+//     <div className="weekly__container">
+//       <div class="weekly__day weekly__gridCell weekly__label">day</div>
+//       <div class="weekly__day weekly__gridCell">Wed</div>
+//       <div class="weekly__day weekly__gridCell">Thu</div>
+//       <div class="weekly__day weekly__gridCell">Fri</div>
+//       <div class="weekly__day weekly__gridCell">Sat</div>
+//       <div class="weekly__date weekly__gridCell weekly__label">date</div>
+//       <div class="weekly__date weekly__gridCell">06/13</div>
+//       <div class="weekly__date weekly__gridCell">06/14</div>
+//       <div class="weekly__date weekly__gridCell">06/15</div>
+//       <div class="weekly__date weekly__gridCell">06/16</div>
+//       <div class="weekly__description weekly__gridCell weekly__label">description</div>
+//       <div class="weekly__description weekly__gridCell">clear sky</div>
+//       <div class="weekly__description weekly__gridCell">few clouds</div>
+//       <div class="weekly__description weekly__gridCell">clear sky</div>
+//       <div class="weekly__description weekly__gridCell">light rain</div>
+//       <div class="weekly__temp weekly__gridCell weekly__label">temp</div>
+//       <div class="weekly__temp weekly__gridCell">82.48</div>
+//       <div class="weekly__temp weekly__gridCell">79.43</div>
+//       <div class="weekly__temp weekly__gridCell">74.75</div>
+//       <div class="weekly__temp weekly__gridCell">70.36</div>
+//       <div class="weekly__humidity weekly__gridCell weekly__label">humidity</div>
+//       <div class="weekly__humidity weekly__gridCell">61</div>
+//       <div class="weekly__humidity weekly__gridCell">64</div>
+//       <div class="weekly__humidity weekly__gridCell">67</div>
+//       <div class="weekly__humidity weekly__gridCell">73</div>
+//       <div class="weekly__pressure weekly__gridCell weekly__label">pressure</div>
+//       <div class="weekly__pressure weekly__gridCell">993.04</div>
+//       <div class="weekly__pressure weekly__gridCell">992.07</div>
+//       <div class="weekly__pressure weekly__gridCell">992.93</div>
+//       <div class="weekly__pressure weekly__gridCell">992.88</div>
+//       <div class="weekly__wind weekly__gridCell weekly__label">wind</div>
+//       <div class="weekly__wind weekly__gridCell">4.18</div>
+//       <div class="weekly__wind weekly__gridCell">4.14</div>
+//       <div class="weekly__wind weekly__gridCell">6.62</div>
+//       <div class="weekly__wind weekly__gridCell">6.22</div>
+//     </div>
+//   </div>
+// );

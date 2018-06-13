@@ -1,0 +1,35 @@
+//Media Query Manager
+
+//Media queries use the user-agent fontsize when working with ems
+//User agent font-size = 16px;
+//Width in em => desiredWidth/font-size = width in ems
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == xs {
+    @media only screen and (max-width: 28.125em) {
+      //450px/16px = 37.5em
+      @content;
+    } //450px
+  }
+  @if $breakpoint == sm {
+    @media only screen and (max-width: 37.5em) {
+      //600px/16px = 37.5em
+      @content;
+    } //600px
+  }
+  @if $breakpoint == md {
+    @media only screen and (max-width: 50em) {
+      @content;
+    } //800px
+  }
+  @if $breakpoint == lg {
+    @media only screen and (max-width: 81.25em) {
+      @content;
+    } //1300px
+  }
+  @if $breakpoint == xl {
+    @media only screen and (min-width: 112.5em) {
+      @content;
+    } //1800px
+  }
+}

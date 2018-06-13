@@ -35,6 +35,11 @@
   &__condition {
     font-size: 1.5rem;
     margin-top: -1rem;
+    text-transform: capitalize;
+
+    @include respond(sm) {
+      margin-top: 0rem;
+    }
   }
 
   &__subDetails {
@@ -42,7 +47,15 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     flex: 1;
     margin-left: 5rem;
-    font-size: 1.4rem;
+    font-size: 1.7rem;
+
+    @include respond(sm) {
+      margin-left: 2rem;
+    }
+
+    @include respond(xs) {
+      margin-left: 0.7rem;
+    }
   }
 
   &__windSpeed {
