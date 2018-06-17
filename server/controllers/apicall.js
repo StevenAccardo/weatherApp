@@ -3,12 +3,10 @@ const weatherAPIKey = require('../config/keys').WEATHERAPIKEY;
 
 //https://openweathermap.org/api
 exports.weather = (req, res, next) => {
-  console.log('req.body', req.body);
   const cityName = req.body.cityName;
   const lat = req.body.lat;
   const lon = req.body.lon;
   const units = req.body.units || 'imperial';
-  console.log('units', units);
 
   let currentWeatherURL;
   let forecastWeatherURL;
@@ -35,7 +33,6 @@ exports.weather = (req, res, next) => {
           forecast: forecastRes.data,
           units
         };
-        console.log('units', weather.units);
         res.send(weather);
       })
     )
