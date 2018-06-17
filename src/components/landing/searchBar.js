@@ -18,7 +18,9 @@ export class SearchBar extends Component {
 
   keyUp(e) {
     if (e.keyCode === 13 && this.state.searchValue !== '') {
-      this.props.fetchWeather(this.state.searchValue, this.state.units);
+      //api expects white space to be replaced with "+" when city names have spaces, i.e. San Diego => San+Diego
+      const cityName = this.state.searchValue.replace(/\ /g, '+');
+      this.props.fetchWeather(cityName, this.state.units);
       this.setState({ searchValue: '', units: 'imperial' });
     }
   }

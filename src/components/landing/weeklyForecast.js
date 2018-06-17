@@ -3,8 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const WeeklyForecast = ({ weather }) => {
-  if (weather && weather.forecast.list) {
+const WeeklyForecast = ({ weather, error }) => {
+  if (error) {
+    return null;
+  } else if (weather && weather.forecast.list) {
     //grabs forecast array, 5days of data ever 3 hours
     const forecastArr = weather.forecast.list;
     //gets the current date with local timezone
@@ -153,58 +155,15 @@ const WeeklyForecast = ({ weather }) => {
         <div className="weekly__container">{renderGrid(totalData)}</div>
       </div>
     );
+  } else {
+    return null;
   }
-
-  return null;
 };
 
 WeeklyForecast.propTypes = {
   weather: PropTypes.object
 };
 
-const mapStateToProps = ({ weather }) => ({ weather });
+const mapStateToProps = ({ weather, error }) => ({ weather, error });
 
 export default connect(mapStateToProps)(WeeklyForecast);
-
-// (
-//   <div className="weekly">
-//     <div className="weekly__header">Next 4 Days</div>
-//     <div className="weekly__container">
-//       <div class="weekly__day weekly__gridCell weekly__label">day</div>
-//       <div class="weekly__day weekly__gridCell">Wed</div>
-//       <div class="weekly__day weekly__gridCell">Thu</div>
-//       <div class="weekly__day weekly__gridCell">Fri</div>
-//       <div class="weekly__day weekly__gridCell">Sat</div>
-//       <div class="weekly__date weekly__gridCell weekly__label">date</div>
-//       <div class="weekly__date weekly__gridCell">06/13</div>
-//       <div class="weekly__date weekly__gridCell">06/14</div>
-//       <div class="weekly__date weekly__gridCell">06/15</div>
-//       <div class="weekly__date weekly__gridCell">06/16</div>
-//       <div class="weekly__description weekly__gridCell weekly__label">description</div>
-//       <div class="weekly__description weekly__gridCell">clear sky</div>
-//       <div class="weekly__description weekly__gridCell">few clouds</div>
-//       <div class="weekly__description weekly__gridCell">clear sky</div>
-//       <div class="weekly__description weekly__gridCell">light rain</div>
-//       <div class="weekly__temp weekly__gridCell weekly__label">temp</div>
-//       <div class="weekly__temp weekly__gridCell">82.48</div>
-//       <div class="weekly__temp weekly__gridCell">79.43</div>
-//       <div class="weekly__temp weekly__gridCell">74.75</div>
-//       <div class="weekly__temp weekly__gridCell">70.36</div>
-//       <div class="weekly__humidity weekly__gridCell weekly__label">humidity</div>
-//       <div class="weekly__humidity weekly__gridCell">61</div>
-//       <div class="weekly__humidity weekly__gridCell">64</div>
-//       <div class="weekly__humidity weekly__gridCell">67</div>
-//       <div class="weekly__humidity weekly__gridCell">73</div>
-//       <div class="weekly__pressure weekly__gridCell weekly__label">pressure</div>
-//       <div class="weekly__pressure weekly__gridCell">993.04</div>
-//       <div class="weekly__pressure weekly__gridCell">992.07</div>
-//       <div class="weekly__pressure weekly__gridCell">992.93</div>
-//       <div class="weekly__pressure weekly__gridCell">992.88</div>
-//       <div class="weekly__wind weekly__gridCell weekly__label">wind</div>
-//       <div class="weekly__wind weekly__gridCell">4.18</div>
-//       <div class="weekly__wind weekly__gridCell">4.14</div>
-//       <div class="weekly__wind weekly__gridCell">6.62</div>
-//       <div class="weekly__wind weekly__gridCell">6.22</div>
-//     </div>
-//   </div>
-// );

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const DailyForecast = ({ weather }) => {
+const DailyForecast = ({ weather, error }) => {
   const optionsDateTime = {
     month: 'short',
     weekday: 'short',
@@ -30,7 +30,9 @@ const DailyForecast = ({ weather }) => {
     return units === 'imperial' ? 'mph' : 'mps';
   };
 
-  if (weather) {
+  if (error) {
+    return <div className="dailyForecast__errorMessage">{error.errorMessage}</div>;
+  } else if (weather) {
     const name = weather.current.name;
     const temp = parseInt(weather.current.main.temp);
     const maxTemp = parseInt(weather.current.main.temp_max);
@@ -102,14 +104,15 @@ const DailyForecast = ({ weather }) => {
         </div>
       </div>
     );
+  } else {
+    return null;
   }
-  return null;
 };
 
 DailyForecast.propTypes = {
   weather: PropTypes.object
 };
 
-const mapStateToProps = ({ weather }) => ({ weather });
+const mapStateToProps = ({ weather, error }) => ({ weather, error });
 
 export default connect(mapStateToProps)(DailyForecast);
