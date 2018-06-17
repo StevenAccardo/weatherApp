@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MagnifySVG from './magnifySVG';
 import { fetchWeather } from '../../actions';
 
-class SearchBar extends Component {
+export class SearchBar extends Component {
   constructor(props) {
     super(props);
 
@@ -17,14 +17,14 @@ class SearchBar extends Component {
   }
 
   keyUp(e) {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && this.state.searchValue !== '') {
       this.props.fetchWeather(this.state.searchValue, this.state.units);
       this.setState({ searchValue: '', units: 'imperial' });
     }
   }
 
   unitChange(e) {
-    if (e.target.value !== this.state.unit) {
+    if (e.target.value) {
       this.setState({
         units: e.target.value
       });
@@ -33,18 +33,44 @@ class SearchBar extends Component {
 
   render() {
     return (
-      <div className="searchBar">
-        <input type="text" onKeyUp={this.keyUp} value={this.state.searchValue} onChange={e => this.setState({ searchValue: e.target.value })} className="searchBar__input" placeholder="City Name" />
+      <div data-test="component-searchbar" className="searchBar">
+        <input
+          data-test="search-input"
+          type="text"
+          onKeyUp={this.keyUp}
+          value={this.state.searchValue}
+          onChange={e => this.setState({ searchValue: e.target.value })}
+          className="searchBar__input"
+          placeholder="City Name"
+        />
         <MagnifySVG />
         <fieldset className="searchBar__fieldSet">
           <div className="searchBar__radioGroup">
-            <input onChange={this.unitChange} id="imperial" className="searchBar__radio-input" type="radio" name="units" value="imperial" checked={this.state.units === 'imperial'} />
+            <input
+              data-test="imperial-radio-input"
+              onChange={this.unitChange}
+              id="imperial"
+              className="searchBar__radio-input"
+              type="radio"
+              name="units"
+              value="imperial"
+              checked={this.state.units === 'imperial'}
+            />
             <label className="searchBar__radio-label" htmlFor="imperial">
               <span className="searchBar__radio-button" />Imperial
             </label>
           </div>
           <div className="searchBar__radioGroup">
-            <input onChange={this.unitChange} id="metric" className="searchBar__radio-input" type="radio" name="units" value="metric" checked={this.state.units === 'metric'} />
+            <input
+              data-test="metric-radio-input"
+              onChange={this.unitChange}
+              id="metric"
+              className="searchBar__radio-input"
+              type="radio"
+              name="units"
+              value="metric"
+              checked={this.state.units === 'metric'}
+            />
             <label className="searchBar__radio-label" htmlFor="metric">
               <span className="searchBar__radio-button" />Metric
             </label>

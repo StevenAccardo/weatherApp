@@ -1,11 +1,11 @@
 import checkPropTypes from 'check-prop-types';
-import { createStrore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '../src/reducers';
 
 //creates a store for us with the initialState that is passed in
 export const storeFactory = initialState => {
-  const middleware = applyMiddleware(thunk);
-  return createStore(rootReducer, initialState, middleware);
+  //const middleware = applyMiddleware(thunk);
+  return createStore(rootReducer, initialState);
 };
 
 //finds the target element when we pass it a component wrapper and the data-test name of the element

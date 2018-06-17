@@ -33,7 +33,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app">
+      <div data-test="component-app" className="app">
         <Header />
         <Landing />
         <Footer />
@@ -45,7 +45,8 @@ class App extends Component {
 const mapStateToProps = ({ weather }) => ({ weather });
 
 App.propTypes = {
-  fetchLatLon: PropTypes.func
+  fetchLatLon: PropTypes.func.isRequired,
+  weather: PropTypes.object
 };
 
 export default connect(
